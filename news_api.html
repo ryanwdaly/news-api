@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>News API Excersice</title>
+</head>
+<body>
+
+    <h1 class='jumbotron'>News API Search</h1>
+
+
+    <label for="search-term" class='input-group-text'>Search Term:</label>
+    <input type="text" id="search-term">
+    <br>
+    <label for="number-to-recieve" class='input-group-text'>Number of Records to Recieve: </label>
+    <input type="text" id="number-to-recieve">
+    <br>
+    <label for="start-year" class='input-group-text'>Start Year (YYYY-MM-DD, Optional): </label>
+    <input type="text" id="start-year">
+    <br>
+    <label for="end-year" class='input-group-text'>End Year (YYYY-MM-DD, Optional): </label>
+    <input type="text" id="end-year">
+    <br>
+
+    <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Sort By: </label>
+            </div>
+    
+            <select class="custom-select" id="inputGroupSelect01">
+              <option selected>Choose...</option>
+              <option value="popularity">Popularity</option>
+              <option value="most-recent">Most Recent</option>
+    
+            </select>
+    </div>
+
+    <input id="search" type="submit" value="search" class='btn btn-primary'>
+    
+    <!-- CLEAR RESULTS -->
+    <button id='clear' class='btn btn-secondary'>Clear Results</button>
+    <br>
+    
+    <div id='search-results'></div>
+
+    <!-- <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col"></th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table> -->
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        
+    // SEARCH BUTTON
+        $("#search").on("click", function(event) {
+            event.preventDefault();
+        
+            var search_term = $("#search-term").val();
+            var number_to_recieve = $("#number-to-recieve").val();
+            var start_year = $("#start-year").val();
+            var end_year = $("#end-year").val();
+           
+            if(!search_term){
+                alert('Please enter a search term!');
+                event.stopPropagation();
+            }
+            if(!number_to_recieve){
+                alert('Please Enter a Number of Records to Recieve!');
+                event.stopPropagation();
+            }
+            if(!start_year){
+                start_year = '2018-12-17';
+            }
+            if(!end_year){
+                end_year = '2019-01-15';
+            }
+
+            //AJAAAAAX
+            var api_key = 'fb2c92d99cbe4d5cbd4eaf71fa1c06c4';
+
+            var queryURL = 'https://newsapi.org/v2/everything?' +
+                    'q='+ search_term + '&' +
+                    'from=' + start_year + '&' +
+                    'sortBy=popularity&' +
+                    'apiKey=' + api_key;
+            
+            // encodeURIComponent(movie) + 
+              
+            $.ajax({
+            url: queryURL,
+            method: "GET"
+            }).then(function(data) {
+                $("#search-results").empty();
+          
+                for(i = 0; i < number_to_recieve; i++) {
+                    // $('#search_results').append('<br>');
+                    // if(data.articles[i].)
+                    $("#search-results").append(JSON.stringify(data.articles[i].title)).append('<br>');
+                   
+                }
+        });
+ 
+      });
+
+    //   CLEAR BUTTON
+      $("#clear").on("click", function(event) {
+            event.preventDefault();
+            location.reload();
+      });
+      
+    </script>
+</body>
+</html>
